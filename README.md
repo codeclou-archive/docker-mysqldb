@@ -1,23 +1,34 @@
 # docker-mysqldb
 
-Dockerized MysqlDB for testing. 
+Dockerized MysqlDB for testing. Should not be used in production. 
 
-:bangbang: **NOTE: This image should only be used during development.** You might want to use the official images instead.
+![](https://codeclou.github.io/doc/docker-warranty.svg?v5)
 
 ### Usage
 
 Start on Port `3366` with user `dbadmin` and password `dbadmin` and mysql-data dir in `./mysql-data/`.
 
 ```bash
-docker run  -p 3366:3306 -v $(pwd)/mysql-data:/var/lib/mysql --name dblocal.codeclou.io codeclou/docker-mysqldb:latest
+docker run  \
+    --name dblocal.codeclou.io \
+    -p 3366:3306 \
+    -v $(pwd)/mysql-data:/var/lib/mysql \
+codeclou/docker-mysqldb:latest
 ```
 
 Start with custom mysql username and password 
 
 ```bash
-docker run -e MYSQL_USER='steve' -e MYSQL_PASS='foo'  -p 3366:3306 -v $(pwd)/mysql-data:/var/lib/mysql --name dblocal.codeclou.io codeclou/docker-mysqldb:latest
+docker run \
+    --name dblocal.codeclou.io \
+    -e MYSQL_USER='steve' \
+    -e MYSQL_PASS='foo' 
+    -p 3366:3306 \
+    -v $(pwd)/mysql-data:/var/lib/mysql \
+codeclou/docker-mysqldb:latest
 ```
 
+-----
 
 ### License
 
