@@ -13,7 +13,7 @@ docker run  \
     --name dblocal.codeclou.io \
     -p 3366:3306 \
     -v $(pwd)/mysql-data:/var/lib/mysql \
-codeclou/docker-mysqldb:latest
+    codeclou/docker-mysqldb:latest
 ```
 
 Start with custom mysql username and password 
@@ -25,7 +25,7 @@ docker run \
     -e MYSQL_PASS='foo' 
     -p 3366:3306 \
     -v $(pwd)/mysql-data:/var/lib/mysql \
-codeclou/docker-mysqldb:latest
+    codeclou/docker-mysqldb:latest
 ```
 
 -----
