@@ -4,6 +4,8 @@ Dockerized MysqlDB for testing. Should not be used in production.
 
 ![](https://codeclou.github.io/doc/docker-warranty.svg?v5)
 
+-----
+
 ### Usage
 
 Start on Port `3366` with user `dbadmin` and password `dbadmin` and mysql-data dir in `./mysql-data/`.
