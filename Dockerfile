@@ -1,42 +1,53 @@
-FROM ubuntu:16.04
+FROM alpine:3.5
 
 #
 # PACKAGES
 #
-RUN apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/* && \
-    sudo apt-get update && \
-    sudo apt-get -y install apt-utils wget curl bzip2 build-essential zlib1g-dev git && \
-    echo 'mysql-server mysql-server/root_password password __DUMMYPW__' | debconf-set-selections && \
-    echo 'mysql-server mysql-server/root_password_again password __DUMMYPW__' | debconf-set-selections && \
-    sudo apt-get -y install mysql-server
+RUN apk add --no-cache \
+            bash \
+            shadow \
+            pwgen \
+            mariadb \
+            mariadb-client
 
 #
-# WORKDIR
+# CHANGING UID AND GID OF MARIADB PRE-INSTALL CREATED USERS TO FIXED VALUE 10777
+# SEE: http://git.alpinelinux.org/cgit/aports/tree/main/mariadb/mariadb.pre-install
 #
-WORKDIR /var/lib/mysql
+RUN usermod -u 10777 mysql && \
+    groupmod -g 10777 mysql && \
+    id mysql && \
+    mkdir -p /var/log/mysql/ && \
+    touch /var/log/mysql/error.log && \
+    mkdir -p /run/mysqld/ && \
+    mkdir -p /opt/mysql/ && \
+    chown -R mysql:mysql /run/mysqld/ && \
+    chown -R mysql:mysql /opt/mysql/ && \
+    chown -R mysql:mysql /var/log/mysql/ && \
+    /usr/bin/mysql_install_db --user=mysql && \
+    cp -arv /var/lib/mysql/mysql /opt/mysql/mysql-after-init
 
-EXPOSE 3306
+
 
 #
-# ERROR LOG TO STDOUT
+# MY.CNF
 #
-RUN ln -sf /dev/stderr /var/log/mysql/error.log
+RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf && \
+    echo '\nskip-host-cache\nskip-name-resolve\nlog-error="/var/log/mysql/error.log"\n' >> /etc/mysql/my.cnf
 
 #
-# MY.CNF 
+# RUN SCRIPT
 #
-RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/mysql.conf.d/mysqld.cnf && \
-    echo '\nskip-host-cache\nskip-name-resolve\n' >> /etc/mysql/mysql.conf.d/mysqld.cnf
-
-#
-# INIT DATA DIR (if not empty) AND START MYSQL
-#
-ENV MYSQL_USER dbadmin
-ENV MYSQL_PASS dbadmin
-COPY run.sh /opt/run.sh
-RUN chmod +x /opt/run.sh
+COPY docker-entrypoint.sh /opt/docker-entrypoint.sh
+RUN chmod u+rx,g+rx,o+rx,a-w /opt/docker-entrypoint.sh
 
 #
 # RUN
 #
-CMD ["/opt/run.sh"]
+EXPOSE 3306
+USER mysql
+ENV MYSQL_USER dbadmin
+ENV MYSQL_PASS dbadmin
+WORKDIR /var/lib/mysql
+ENTRYPOINT ["/opt/docker-entrypoint.sh"]
+CMD ["mysqld_safe"]
