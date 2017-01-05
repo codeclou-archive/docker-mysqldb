@@ -1,6 +1,6 @@
 # docker-mysqldb
 
-[![](https://codeclou.github.io/doc/badges/generated/docker-image-size-28.svg)](https://hub.docker.com/r/codeclou/docker-mysqldb/tags/) [![](https://codeclou.github.io/doc/badges/generated/docker-from-alpine-linux.svg)](https://alpinelinux.org/) [![](https://codeclou.github.io/doc/badges/generated/docker-run-as-non-root.svg)](https://docs.docker.com/engine/reference/builder/#/user)
+[![](https://codeclou.github.io/doc/badges/generated/docker-image-size-52.svg)](https://hub.docker.com/r/codeclou/docker-mysqldb/tags/) [![](https://codeclou.github.io/doc/badges/generated/docker-from-alpine-linux.svg)](https://alpinelinux.org/) [![](https://codeclou.github.io/doc/badges/generated/docker-run-as-non-root.svg)](https://docs.docker.com/engine/reference/builder/#/user)
 
 [MariaDB](https://mariadb.org/) Docker-Image for local testing and development.
 
