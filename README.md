@@ -6,7 +6,6 @@
 
 
 -----
-
 &nbsp;
 
 ### Prerequisites
@@ -14,9 +13,11 @@
  * Runs as non-root with fixed UID 10777 and GID 10777. See [howto prepare volume permissions](https://github.com/codeclou/doc/blob/master/docker/README.md).
  * See [howto use SystemD for named Docker-Containers and system startup](https://github.com/codeclou/doc/blob/master/docker/README.md).
 
------
 
+
+-----
 &nbsp;
+
 
 
 ### Usage
